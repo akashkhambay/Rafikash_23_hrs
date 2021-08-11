@@ -8,13 +8,15 @@ const Form = ({ getSearchInput }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     getSearchInput(username);
+    setUsername('');
   };
 
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Please enter your username" value={username} onChange={handleUsername} />
-        <input type="submit" value="Submit" />
+        <input id="form" type="text" placeholder="Please enter your username" value={username} onChange={handleUsername} />
+        <p></p>
+        <input id="submit" type="submit" value="Submit" />
       </form>
     </>
   );

@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import "./style.css";
+
+import React, { useState, useEffect } from 'react';
+import { RepoInfo } from '../../components';
+import axios from 'axios';
 
 const UserDetails = ({ searchInput }) => {
-  const [userInformation, setUserInformation] = useState([""]);
-  const [statusMessage, setStatusMessage] = useState("Finding your info...");
+  const [userInformation, setUserInformation] = useState([]);
+  const [userStats, setUserStats] = useState('');
+  const [statusMessage, setStatusMessage] = useState('Finding your info...');
+
   useEffect(() => {
     const fetchUserData = async () => {
       setStatusMessage("Finding your info...");
       try {
-        let { data } = await axios.get(
-          `https://api.github.com/users/${searchInput}/repos`
-        );
-        let userAccountInfo = [
-          {
-            id: data[0].owner.id,
-            type: data[0].owner.type,
-            user: data[0].owner.login,
-            github: data[0].owner.url,
-          },
-        ];
+        let { data } = await axios.get(`https://api.github.com/users/${searchInput}/repos`);
+        let userAccountInfo = {
+          id: data[0].owner.id,
+          type: data[0].owner.type,
+          user: data[0].owner.login,
+          github: data[0].owner.url,
+        };
+
 
         const array = data.map((repo) => {
           let index = repo.id;
@@ -35,32 +35,43 @@ const UserDetails = ({ searchInput }) => {
           };
         });
 
+        setUserStats(userAccountInfo);
         setUserInformation(array);
+        
         setStatusMessage("");
         console.log(userAccountInfo);
         console.log(userInformation);
-        console.log(array[1].repository_name);
+        console.log(array[0].repository_name);
       } catch (err) {
         console.warn(err);
         setStatusMessage(`Ooops hay una problema! ${err.message}`);
       }
     };
-    fetchUserData();
+    // console.log(userInformation);
+    if (searchInput) {
+      fetchUserData();
+    }
   }, [searchInput]);
-  console.log(userInformation);
-  // const renderRepos = (userInformation) =>
-  //   userInformation.map((repo) => {
-  //     (<li> {repo.index} </li>),
-  //       (<li> {repo.repository_name} </li>),
-  //       (<li> {repo.repository_url} </li>),
-  //       (<li>{repo.repository_fork_count}</li>);
-  //   });
+
+  // console.log(userInformation);
+
+  const renderRepos = () =>
+    userInformation.map((el, index) => (
+      <RepoInfo
+        key={el.index}
+        repository_name={el.repository_name}
+        repository_url={el.repository_url}
+        repository_fork_count={el.repository_fork_count}
+      />
+    ));
+
   return (
     <>
-      <p>{userInformation[0].index}</p>
-      <p>{userInformation[0].repository_name}</p>
-      <p>{userInformation[0].repository_url}</p>
-      <p>{userInformation[0].repository_fork_count}</p>
+      <p>{userStats.id}</p>
+      <p>{userStats.type}</p>
+      <p>{userStats.user}</p>
+      <a href={userStats.github}></a>
+      <div>{userInformation ? renderRepos() : ''}</div>
     </>
   );
 };
