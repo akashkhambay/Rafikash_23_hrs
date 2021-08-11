@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./style.css";
 
 const UserDetails = ({ searchInput }) => {
-  const [userInformation, setUserInformation] = useState([]);
-  const [statusMessage, setStatusMessage] = useState('Finding your info...');
+  const [userInformation, setUserInformation] = useState([""]);
+  const [statusMessage, setStatusMessage] = useState("Finding your info...");
   useEffect(() => {
     const fetchUserData = async () => {
-      setStatusMessage('Finding your info...');
+      setStatusMessage("Finding your info...");
       try {
-        let { data } = await axios.get(`https://api.github.com/users/${searchInput}/repos`);
+        let { data } = await axios.get(
+          `https://api.github.com/users/${searchInput}/repos`
+        );
         let userAccountInfo = [
           {
             id: data[0].owner.id,
@@ -24,11 +27,16 @@ const UserDetails = ({ searchInput }) => {
           let repository_url = repo.git_url;
           let repository_fork_count = repo.forks_count;
 
-          return { index, repository_name, repository_url, repository_fork_count };
+          return {
+            index,
+            repository_name,
+            repository_url,
+            repository_fork_count,
+          };
         });
 
         setUserInformation(array);
-        setStatusMessage('');
+        setStatusMessage("");
         console.log(userAccountInfo);
         console.log(userInformation);
         console.log(array[1].repository_name);
@@ -39,9 +47,20 @@ const UserDetails = ({ searchInput }) => {
     };
     fetchUserData();
   }, [searchInput]);
+  console.log(userInformation);
+  // const renderRepos = (userInformation) =>
+  //   userInformation.map((repo) => {
+  //     (<li> {repo.index} </li>),
+  //       (<li> {repo.repository_name} </li>),
+  //       (<li> {repo.repository_url} </li>),
+  //       (<li>{repo.repository_fork_count}</li>);
+  //   });
   return (
     <>
-      <p>{userInformation.index}</p>
+      <p>{userInformation[0].index}</p>
+      <p>{userInformation[0].repository_name}</p>
+      <p>{userInformation[0].repository_url}</p>
+      <p>{userInformation[0].repository_fork_count}</p>
     </>
   );
 };
