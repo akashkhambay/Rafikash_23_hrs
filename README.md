@@ -35,6 +35,7 @@ Welcome to the WebApp created by Rafika and Akash. This App is our take on a Git
 - At one point the url used for the axios request was wrong and we didn't know why it wasn't working.
 - When searching for a username, we get one single repo, not ALL the repos linked to the respective account.
 - Map does not work, and we dont know why, when comparing it to repos in which they do work, we cannot see the difference or the bug.
+- The desired information related to the user is coming through on devtools but the problem is that we have to hard code each repo, from the array of repo objects, this is the challenge as we can get all the information to render onto the DOM.
 
 ## Wins:
 
@@ -43,3 +44,4 @@ Welcome to the WebApp created by Rafika and Akash. This App is our take on a Git
 - Got the axios GET request to fetch the relevant data for the repos linked to GITHUB username.
 - Rafika figuring out our array index issue.
 - Got github repo information to render on the page.
+- Desired user information is coming to the broswer console, in devtools.
